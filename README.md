@@ -1,70 +1,81 @@
-# Getting Started with Create React App
+### UseEffect
+- React comes with a built in hook for “side effects” (Fetching data, starting a timer, and manually changing the DOM are all side effects)
+- Each render has its own effects
+- Sometimes these effects require clean-up (clearing a timeout, closing a connection)
+- useEffect will run after the first render
+- useEffect will run after all rerenders by default
+- useEffect accepts a callback function as its first argument
+- useEffect returns undefined or a function
+- If you return a function, the function will be run before the component unmounts or before the effect runs again
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### useEffect arguments
+#### 2nd argument to useEffect
+- You can tell React to skip applying an effect if certain values haven’t changed between re-renders.
+- useEffect accepts an array as its second argument where you place these values (also called dependencies)
+- What you pass to the array can help avoid performance issues (we’ll talk about this more later)
+- If you want to run an effect and clean it up only once (on mount and unmount), you can pass an empty array ([]) as a second argument.
 
-## Available Scripts
+- This tells React that your effect doesn’t depend on any values from props or state, so it never needs to re-run.
 
-In the project directory, you can run:
 
-### `yarn start`
+### Fetching Data on Initial Render
+#### A Typical Use Case for useEffect
+- It’s very common that when a component renders, you’ll want to fetch some data from an external data source or API
+- We want to do this after the component first renders so that we can show the user something (e.g. a loading screen) while we fetch that data
+- To fetch correctly, we’ll run an effect that only happens once and when the API call is finished, we’ll set our state and render the component again
+- Some important notes here:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  - useEffect cannot be an async function, we must define an async function inside and invoke it
+  - make sure that we change state after getting back a response
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Cleaning up an Effect
 
-### `yarn test`
+```js
+useEffect(() => {
+  // runs on the first render and all times after
+  // because we didn't pass in an array as a 2nd arg!
+  console.log('Effect ran!');
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  // if we return a function
+  // it will run when the component unmounts
+  // or before the effect runs again
+  return () => console.log('in the cleanup phase!');
+})
+```
 
-### `yarn build`
+### useRef
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+useRef is another built-in hook in React.
+It returns a mutable object with a key of current, whose value is equal to the initial value passed into the hook.
+The object persists across renders (so it’s like a local variable, but independent of state).
+Mutating the object does not trigger a re-render.
+Common Applications of useRef
+Accessing an underlying DOM element
+Setting up / clearing timers
+Accessing the DOM
+Sometimes, you need to access an HTMLElement to make use of a Web API or to integrate some other JavaScript library.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This is a great time to use a ref!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Accessing the DOM Example
+.playbackRate can only be changed if you have access to the underlying HTML element.
+A ref can get us access to the DOM element!
+To assign a ref to a DOM element, use the ref attribute on the desired element.
+Timers
+Another great time to use a ref is with timers like setInterval.
 
-### `yarn eject`
+setInterval returns a timer ID, which we need to stop the setInterval from running.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+We can store that ID in a ref, and then stop the timer when the component is removed from the DOM.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Timer Example
+Antipattern for useRef
+Since refs can expose DOM elements for us, it can be tempting to use them to access the DOM and make changes (toggle classes, set text, etc).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This is not how refs should be used. React should control the state of the DOM!
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+From the docs:
 
-## Learn More
+Your first inclination may be to use refs to “make things happen” in your app. If this is the case, take a moment and think more critically about where state should be owned in the component hierarchy.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
