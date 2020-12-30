@@ -3,8 +3,8 @@ import './Card.css';
 
 /** Single card: just renders the card as received from deck. */
 
-
 function Card({name, image}) {
+
   const [{angle, xPos, yPos}] = useState({
     angle: Math.random() * 90 - 45,
     xPos: Math.random() * 40 - 20,
@@ -19,4 +19,4 @@ function Card({name, image}) {
             style={{transform}} />;
 }
 
-export default Card;
+export default Card
