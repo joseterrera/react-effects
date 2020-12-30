@@ -45,37 +45,16 @@ useEffect(() => {
 
 ### useRef
 
-useRef is another built-in hook in React.
-It returns a mutable object with a key of current, whose value is equal to the initial value passed into the hook.
-The object persists across renders (so it’s like a local variable, but independent of state).
-Mutating the object does not trigger a re-render.
-Common Applications of useRef
-Accessing an underlying DOM element
-Setting up / clearing timers
-Accessing the DOM
-Sometimes, you need to access an HTMLElement to make use of a Web API or to integrate some other JavaScript library.
+- useRef is another built-in hook in React.
+- It returns a mutable object with a key of current, whose value is equal to the initial value passed into the hook.
+- The object persists across renders (so it’s like a local variable, but independent of state).
+- Mutating the object does not trigger a re-render.
+#### Common Applications of useRef
+- Accessing an underlying DOM element
+- Setting up / clearing timers
+- Accessing the DOM
+- Sometimes, you need to access an HTMLElement to make use of a Web API or to integrate some other JavaScript library.
 
-This is a great time to use a ref!
 
-Accessing the DOM Example
-.playbackRate can only be changed if you have access to the underlying HTML element.
-A ref can get us access to the DOM element!
-To assign a ref to a DOM element, use the ref attribute on the desired element.
-Timers
-Another great time to use a ref is with timers like setInterval.
-
-setInterval returns a timer ID, which we need to stop the setInterval from running.
-
-We can store that ID in a ref, and then stop the timer when the component is removed from the DOM.
-
-Timer Example
-Antipattern for useRef
-Since refs can expose DOM elements for us, it can be tempting to use them to access the DOM and make changes (toggle classes, set text, etc).
-
-This is not how refs should be used. React should control the state of the DOM!
-
-From the docs:
-
-Your first inclination may be to use refs to “make things happen” in your app. If this is the case, take a moment and think more critically about where state should be owned in the component hierarchy.
 
 
