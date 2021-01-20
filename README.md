@@ -1,3 +1,8 @@
+### Deck of Cards
+
+An app that displays a deck of cards, one card at a time. When the page loads, go to the Deck of Cards API to create a new deck, and show a button on the page that will draw a card every second. These draws will continue until you press the button again, or until the deck has been exhausted, at which point an alert message should appear).
+
+
 ### UseEffect
 - React comes with a built in hook for “side effects” (Fetching data, starting a timer, and manually changing the DOM are all side effects)
 - Each render has its own effects
